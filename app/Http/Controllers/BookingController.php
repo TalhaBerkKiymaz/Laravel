@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -87,9 +91,19 @@ class BookingController extends Controller
      */
     public function update(Request $request, Booking $booking)
     {
-        $booking->fill($request->input());
+        (\App\Jobs\ProcessBookingJob::dispatch($booking));
+        $validatedData = $request->validate([
+            'start' => 'required|date',
+            'end' => 'required|date',
+            'room_id' => 'required|exists:rooms,id',
+            'user_id' => 'required|exists:users,id',
+            'is_paid' => 'nullable',
+            'notes' => 'present',
+            'is_reservation' => 'required', 
+        ]);
+        $booking->fill($validatedData);
         $booking->save();
-        $booking->users()->sync([$request->input('user_id')]);
+        $booking->users()->sync([$validatedData['user_id']]);
         return redirect()->action('BookingController@index');
     }
 

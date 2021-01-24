@@ -1,0 +1,6 @@
+[2021-01-23 14:17:04][3] Processing: App\Jobs\ProcessBookingJob
+[2021-01-23 14:17:04][4] Processing: App\Jobs\ProcessBookingJob
+[2021-01-23 14:17:04][5] Processing: App\Jobs\ProcessBookingJob
+[2021-01-23 14:17:09][4] Processed:  App\Jobs\ProcessBookingJob
+[2021-01-23 14:17:09][3] Processed:  App\Jobs\ProcessBookingJob
+[2021-01-23 14:17:09][5] Processed:  App\Jobs\ProcessBookingJob

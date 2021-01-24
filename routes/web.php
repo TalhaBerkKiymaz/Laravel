@@ -17,11 +17,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/test', function() {return "Goodbye";});
+Route::get('/test', function() {
+    $hash = Hash::make('black-saber');
+    var_dump($hash);
+    var_dump(Hash::check('black-saber', $hash));
+    var_dump(Hash::needsRehash($hash));
+    $oldHash = Hash::make('black-saber', ['rounds' => 5]);
+    var_dump($oldHash);
+    var_dump(Hash::needsRehash($oldHash));
+    var_dump(Hash::make('black-saber'));
+})->middleware('verified');
 
 Route::get('/rooms/{roomType?}', 'ShowRoomsController');
 
@@ -35,3 +44,5 @@ Route::get('/rooms/{roomType?}', 'ShowRoomsController');
 //Route::delete('/bookings/{booking}', 'BookingController@destroy');
 
 Route::resource('bookings', 'BookingController');
+
+Route::resource('room_types', 'RoomTypeController');
